@@ -12,6 +12,28 @@ export LIB_FILES = $(PLATFORM_DIR)/lib/sky130_fd_sc_hd__tt_025C_1v80.lib \
 export GDS_FILES = $(wildcard $(PLATFORM_DIR)/gds/*.gds) \
                      $(ADDITIONAL_GDS_FILES)
 
+# Cell padding in SITE widths to ease rout-ability
+export CELL_PAD_IN_SITES = 4
+
+# Endcap and Welltie cells
+export TAPCELL_TCL = ./platforms/$(PLATFORM)/tapcell.tcl
+
+export CTS_TECH_DIR   = ./platforms/$(PLATFORM)/tritonCTShd
+
+# FastRoute options
+export MIN_ROUTING_LAYER = met1
+export MAX_ROUTING_LAYER = met5
+
+# IO Pin fix margin
+export IO_PIN_MARGIN = 70
+
+# Layer to use for parasitics estimations
+export WIRE_RC_LAYER = met3
+
+# KLayout technology file
+export KLAYOUT_TECH_FILE = ./platforms/$(PLATFORM)/$(PLATFORM).lyt
+
+
 # Dont use cells to ease congestion
 # Specify at least one filler cell if none
 
@@ -53,6 +75,12 @@ export DONT_USE_CELLS += \
     sky130_fd_sc_hd__lpflow_lsbuf_lh_isowell_4 \
     sky130_fd_sc_hd__lpflow_lsbuf_lh_isowell_tap_1 \
     sky130_fd_sc_hd__lpflow_lsbuf_lh_isowell_tap_2 \
+    sky130_fd_sc_hd__lpflow_lsbuf_lh_isowell_tap_4 \
+    sky130_fd_sc_hd__clkbuf_1 \
+    sky130_fd_sc_hd__clkbuf_2 \
+    sky130_fd_sc_hd__clkbuf_4 \
+    sky130_fd_sc_hd__clkbuf_8 \
+    sky130_fd_sc_hd__clkbuf_16
     sky130_fd_sc_hd__lpflow_lsbuf_lh_isowell_tap_4
 #
 # Define fill cells
