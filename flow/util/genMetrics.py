@@ -68,8 +68,12 @@ def extractTagFromFile(jsonTag, jsonFile, pattern, file, count=False, occurrence
       content = f.read()
 
     m = re.findall(pattern, content, re.M)
+    useDefault = False
+    if occurrence != -1 and abs(occurrence) > len(m):
+      # Not that many occurrences, use default
+      useDefault = True
 
-    if m:
+    if m and not useDefault :
       if count:
         # Return the count
         jsonFile[jsonTag] = len(m)
@@ -251,6 +255,30 @@ def extract_metrics(cwd, platform, design, flow_variant, output, hier_json):
 
 # Floorplan
 # ==============================================================================
+
+    extractTagFromFile("floorplan__design__blob__pre__restruct__stdcell__count", metrics_dict,
+                       "Found (\d+) instances for restructuring",
+                       logPath+"/2_1_floorplan.log", defaultNotFound=0)
+
+    extractTagFromFile("floorplan__design__blob__post__restruct__stdcell__count", metrics_dict,
+                       "inserting (\d+) new instances",
+                       logPath+"/2_1_floorplan.log", defaultNotFound=0)
+
+    extractTagFromFile("floorplan__design__pre__restruct__stdcell__count", metrics_dict,
+                       "number instances before restructure is (\d+)",
+                       logPath+"/2_1_floorplan.log", defaultNotFound=0)
+
+    extractTagFromFile("floorplan__design__post__restruct__stdcell__count", metrics_dict,
+                       "number instances after restructure is (\d+)",
+                       logPath+"/2_1_floorplan.log", defaultNotFound=0)
+
+    extractTagFromFile("floorplan__design__pre__restruct__stdcell__area", metrics_dict,
+                       "^Design area (\S+) u\^2",
+                       logPath+"/2_1_floorplan.log", occurrence=-2, defaultNotFound=0)
+
+    extractTagFromFile("floorplan__design__post__restruct__stdcell__area", metrics_dict,
+                       "^Design area (\S+) u\^2",
+                       logPath+"/2_1_floorplan.log", defaultNotFound=0)
 
     extractTagFromFile("floorplan__timing__setup__tns", metrics_dict,
                        baseRegEx.format("floorplan final report_tns", "tns (\S+)"),
